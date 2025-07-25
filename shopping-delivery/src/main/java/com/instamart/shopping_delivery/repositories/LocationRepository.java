@@ -1,12 +1,11 @@
 package com.instamart.shopping_delivery.repositories;
 
-import com.instamart.shopping_delivery.dto.WareHouseRegistrationDTO;
-import com.instamart.shopping_delivery.models.WareHouse;
+import com.instamart.shopping_delivery.models.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface WareHouseRepository extends JpaRepository<WareHouse, UUID> {
+public interface LocationRepository extends JpaRepository<Location,UUID> {
 }

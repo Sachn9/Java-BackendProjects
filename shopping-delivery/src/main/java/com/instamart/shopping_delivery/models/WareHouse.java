@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="wareHouses")
+@Table(name = "warehouses")
 public class WareHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID ID;
+    UUID id;
     String name;
     @OneToOne
     AppUser manager;

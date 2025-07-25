@@ -4,6 +4,7 @@ import com.instamart.shopping_delivery.exception.InvalidOperationException;
 import com.instamart.shopping_delivery.exception.UserNotExitException;
 import com.instamart.shopping_delivery.models.AppUser;
 import com.instamart.shopping_delivery.service.AppUserService;
+import com.instamart.shopping_delivery.service.MailService;
 import jakarta.persistence.Entity;
 import org.apache.tomcat.util.net.jsse.JSSEUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,6 @@ public class UserController {
 
     @GetMapping("/wareHouse/admin/accept/invite/{wareHouseAdminId}")
     public void acceptWareHouseAdminInvite(@PathVariable UUID wareHouseAdminId){
-        appUserService.acceptWareHouseAdmin(wareHouseAdminId);
+        appUserService.acceptWareHouseAdminInvite(wareHouseAdminId);
     }
 }

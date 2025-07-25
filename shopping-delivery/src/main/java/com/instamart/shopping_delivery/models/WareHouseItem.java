@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="warehouses")
-public class WareHouseItem {
+@Table(name="warehouseitems")
+public class WareHouseItem{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;

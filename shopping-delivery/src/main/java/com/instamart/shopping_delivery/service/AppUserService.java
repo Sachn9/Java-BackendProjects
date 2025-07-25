@@ -43,7 +43,7 @@ public class AppUserService {
 
         }
 
-        if(!admin.getUserType().equals("APP_ADMIN")){
+        if(!admin.getUserType().equals("APP-ADMIN")){
             throw new InvalidOperationException("user not allowed to invite wareHouse admin");
         }
 
@@ -58,6 +58,15 @@ public class AppUserService {
         AppUser user=appUserRepository.findById(wareHouseAdminId).orElse(null);
         user.setStatus("ACTIVE");
         appUserRepository.save(user);
+
+    }
+
+    public AppUser isAppAdmin(UUID userId){
+        AppUser user=appUserRepository.findById(userId).orElse(null);
+        if(user.getUserType().equals("APP-ADMIN")){
+            return user;
+        }
+        return null;
 
     }
 

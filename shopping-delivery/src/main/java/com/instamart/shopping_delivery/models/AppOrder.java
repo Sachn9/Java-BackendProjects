@@ -15,6 +15,7 @@ public class AppOrder {
     UUID id;
     int totalItems;
     int totalPrice;
+    String status;
     @ManyToOne
     AppUser deliveryPartner;
 
