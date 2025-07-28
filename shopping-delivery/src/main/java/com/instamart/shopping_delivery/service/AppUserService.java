@@ -70,4 +70,13 @@ public class AppUserService {
 
     }
 
+    public AppUser isWareHouseAdminId(UUID wareHouseAdminId){
+
+        AppUser wareHouseAdmin=appUserRepository.findById(wareHouseAdminId).orElse(null);
+        if(wareHouseAdmin.getUserType().equals("WAREHOUSE-ADMIN")){
+            return wareHouseAdmin;
+        }
+        return null;
+    }
+
 }

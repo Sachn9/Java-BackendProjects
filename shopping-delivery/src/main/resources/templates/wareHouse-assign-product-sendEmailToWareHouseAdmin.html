@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Added to Your Warehouse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #2d7ff9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        th {
+            background-color: #f5faff;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #fafcff;
+        }
+        .footer {
+            margin-top: 32px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>New Product Stock Entry</h2>
+
+    <p>Dear Warehouse Admin,</p>
+
+    <p>A product has been added or updated in your warehouse system. Below are the details:</p>
+
+    <table>
+        <tr>
+            <th>Warehouse ID</th>
+            <td>[[${wid}]]</td>
+        </tr>
+        <tr>
+            <th>Product ID</th>
+            <td>[[${pid}]]</td>
+        </tr>
+        <tr>
+            <th>Quantity</th>
+            <td>[[${quantity}]]</td>
+        </tr>
+        <tr>
+            <th>Discount</th>
+            <td>[[${discount}]]%</td>
+        </tr>
+        <tr>
+            <th>Created At</th>
+            <td>[[${createdAt}]]</td>
+        </tr>
+        <tr>
+            <th>Last Updated</th>
+            <td>[[${updatedAt}]]</td>
+        </tr>
+    </table>
+
+    <p>If this update was not initiated by you, please contact the administrator immediately.</p>
+
+    <p class="footer">Thanks,<br/>Instamart Inventory System</p>
+</div>
+</body>
+</html>

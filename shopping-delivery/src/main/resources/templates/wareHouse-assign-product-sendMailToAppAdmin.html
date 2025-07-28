@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Warehouse Product Entry</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f8fa; padding: 20px; }
+    .container { background: #ffffff; border-radius: 8px; padding: 24px; max-width: 600px; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    h2 { color: #2d7ff9; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; text-align: left; }
+    th { background-color: #f0f4fa; }
+    tr:nth-child(even) { background-color: #f9fbff; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>New Product Added to Warehouse</h2>
+  <p>Dear Admin,</p>
+  <p>A new product entry has been added to the warehouse. Please find the details below:</p>
+
+  <table>
+    <tr>
+      <th>Warehouse ID</th>
+      <td>[[${wid}]]</td>
+    </tr>
+    <tr>
+      <th>Product ID</th>
+      <td>[[${pid}]]</td>
+    </tr>
+    <tr>
+      <th>Quantity</th>
+      <td>[[${quantity}]]</td>
+    </tr>
+    <tr>
+      <th>Discount (%)</th>
+      <td>[[${discount}]]</td>
+    </tr>
+    <tr>
+      <th>Created At</th>
+      <td>[[${createdAt}]]</td>
+    </tr>
+    <tr>
+      <th>Updated At</th>
+      <td>[[${updatedAt}]]</td>
+    </tr>
+  </table>
+
+  <p style="margin-top: 28px;">Regards,<br>Your Application Team</p>
+</div>
+</body>
+</html>

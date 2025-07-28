@@ -1,8 +1,12 @@
 package com.instamart.shopping_delivery.utility;
 
+import com.instamart.shopping_delivery.dto.ProductDTO;
 import com.instamart.shopping_delivery.dto.WareHouseRegistrationDTO;
+import com.instamart.shopping_delivery.models.AppUser;
 import com.instamart.shopping_delivery.models.Location;
+import com.instamart.shopping_delivery.models.Product;
 import com.instamart.shopping_delivery.models.WareHouse;
+import com.instamart.shopping_delivery.service.WareHouseService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,4 +26,19 @@ public class MappingUtility {
         wareHouse.setUpdatedAt(LocalDateTime.now());
         return  wareHouse;
     }
+
+    public Product mapProductDTOToProductModel(ProductDTO productDTO,
+                                               AppUser user){
+        Product product=new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setDescription(productDTO.getDescription());
+        product.setOwnerCompany(productDTO.getOwnerCompany());
+        product.setTotalQuantity(productDTO.getTotalQuantity());
+        product.setUnitPrice(productDTO.getUnitPrice());
+        product.setCreateBy(user);
+        product.setCreatedAt(LocalDateTime.now());
+        product.setUpdatedAt(LocalDateTime.now());
+        return product;
+    }
+
 }

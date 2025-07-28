@@ -27,9 +27,19 @@ public class WareHouseController{
 
         //We are getting userId from requestParam And we are getting wareHouseRegistrationDTO in request body.
         //Now we should call wareHouse Service to implement the logic.
-        WareHouse wareHouse= wareHouseService.wareHouseRegistration(userId,wareHouseRegistrationDTO);
+        WareHouseRegistrationDTO wareHouse= wareHouseService.wareHouseRegistration(userId,wareHouseRegistrationDTO);
         return new ResponseEntity(wareHouse, HttpStatus.CREATED);
 
+
+    }
+
+    @PutMapping("/assign/manager")
+    public ResponseEntity assignManagerToWareHouse(@RequestParam UUID appAdmin,
+                                                   @RequestParam  UUID wareHouseId,
+                                                   @RequestParam UUID wareHouseAdminId){
+        //wareHouse service
+       WareHouseRegistrationDTO wareHouseRegistrationDTO =wareHouseService.assignManagerToWarehouse(appAdmin,wareHouseId,wareHouseAdminId);
+        return new ResponseEntity<>(wareHouseRegistrationDTO,HttpStatus.OK);
 
     }
 

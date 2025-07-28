@@ -1,9 +1,12 @@
 package com.instamart.shopping_delivery.service;
 
 import com.instamart.shopping_delivery.models.AppUser;
+import com.instamart.shopping_delivery.models.Product;
 import com.instamart.shopping_delivery.models.WareHouse;
+import com.instamart.shopping_delivery.models.WareHouseItem;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.angus.mail.imap.protocol.MailboxInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.Properties;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -80,5 +84,110 @@ public class MailService {
 
         javaMailSender.send(message);
     }
+
+
+    public void sendADDProductionMail(Product product, AppUser user){
+        Context context=new Context();
+        context.setVariable("productName",product.getProductName());
+        context.setVariable("unitPrice",product.getUnitPrice());
+        context.setVariable("totalQuantity",product.getTotalQuantity());
+        context.setVariable("ownerCompany",product.getOwnerCompany());
+        context.setVariable("description",product.getDescription());
+        context.setVariable("createdBy",product.getCreateBy());
+        context.setVariable("createdAt",product.getCreatedAt());
+
+        String htmlContent=templateEngine.process("Product-add-email",context);
+
+        MimeMessage message=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message);
+        try {
+            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setText(htmlContent, true);
+            mimeMessageHelper.setSubject("New Products Add");
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+        javaMailSender.send(message);
+
+
+    }
+
+    public void sendAssignWareHouseItemToAppAdmin(WareHouseItem wareHouseItem,AppUser user){
+        Context context=new Context();
+        context.setVariable("wid",wareHouseItem.getWid());
+        context.setVariable("pid",wareHouseItem.getPid());
+        context.setVariable("quantity",wareHouseItem.getQuantity());
+        context.setVariable("discount",wareHouseItem.getDiscount());
+        context.setVariable("createdAt",wareHouseItem.getCreatedAt());
+        context.setVariable("updatedAt",wareHouseItem.getUpdatedAt());
+
+        String htmlContent=templateEngine.process("wareHouse-assign-product-sendMailToAppAdmin",context);
+        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage);
+
+        try {
+            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setText(htmlContent, true);
+            mimeMessageHelper.setSubject("WareHouse Product Allocate");
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+        javaMailSender.send(mimeMessage);
+
+    }
+
+//    public void sendMailAssignWareHouseItemToWareHouseAdmin(WareHouseItem wareHouseItem,WareHouse wareHouse){
+//        Context context=new Context();
+//        context.setVariable("wid",wareHouseItem.getWid());
+//        context.setVariable("pid",wareHouseItem.getPid());
+//        context.setVariable("quantity",wareHouseItem.getQuantity());
+//        context.setVariable("discount",wareHouseItem.getDiscount());
+//        context.setVariable("createdAt",wareHouseItem.getCreatedAt());
+//        context.setVariable("updatedAt",wareHouseItem.getUpdatedAt());
+//
+//        String htmlContent=templateEngine.process("wareHouse-assign-product-sendEmailToWareHouseAdmin",context);
+//        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+//        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage);
+//
+//        try{
+//            mimeMessageHelper.setTo(wareHouse.);
+//            mimeMessageHelper.setText(htmlContent,true);
+//            mimeMessageHelper.setSubject("Assign product in wareHouse!");
+//        }catch (Exception e){
+//            log.error(e.getMessage());
+//        }
+//
+//        javaMailSender.send(mimeMessage);
+//
+//    }
+
+
+    public void sendEmailToWareHouseAdminAssignManager(WareHouse wareHouse,AppUser wareHouseAdmin){
+        Context context=new Context();
+        context.setVariable("managerName",wareHouseAdmin.getName());
+        context.setVariable("warehouseName",wareHouse.getName());
+        context.setVariable("locationAddress",wareHouse.getLocation().getAddress());
+        context.setVariable("locationCity",wareHouse.getLocation().getCity());
+        context.setVariable("locationState",wareHouse.getLocation().getState());
+        context.setVariable("locationCountry",wareHouse.getLocation().getCountry());
+        context.setVariable("pinCode",wareHouse.getLocation().getPinCode());
+
+        String htmContent=templateEngine.process("assign-to-manager-a wareHouse",context);
+        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage);
+
+        try{
+            mimeMessageHelper.setTo(wareHouseAdmin.getEmail());
+            mimeMessageHelper.setText(htmContent,true);
+            mimeMessageHelper.setSubject("Manager Allocate successfully!");
+        }catch (Exception e){
+            log.error((e.getMessage()));
+        }
+
+        javaMailSender.send(mimeMessage);
+    }
+
 }
 
