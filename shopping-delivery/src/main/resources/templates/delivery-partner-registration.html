@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Delivery Partner Registration</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; color: #333;">
+<table width="100%" cellpadding="0" cellspacing="0"
+       style="max-width: 600px; margin: auto; background-color: #fff;
+                border-radius: 8px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    <tr>
+        <td>
+            <h2 style="color: #007bff;">New Delivery Partner Registration Request</h2>
+            <p>Dear Warehouse Admin,</p>
+            <p>
+                A new delivery partner is requesting access to your warehouse. Please review the details below.
+                If the information is correct, click the <strong>Accept</strong> button below to approve the registration.
+            </p>
+
+            <h3>Partner Details:</h3>
+            <ul style="line-height: 1.6;">
+                <li><strong>Name:</strong> [[${name}]]</li>
+                <li><strong>Email:</strong> [[${email}]]</li>
+                <li><strong>Phone Number:</strong> [[${phoneNumber}]]</li>
+                <li><strong>User Type:</strong> [[${userType}]]</li>
+                <li><strong>Status:</strong> [[${status}]]</li>
+
+            </ul>
+
+            <!-- Accept Button -->
+            <form th:action="@{${acceptLink}}" method="put">
+                <button type="submit" style="background-color: #28a745; color: white; padding: 12px 24px;
+                    text-decoration: none; border-radius: 5px; font-size: 16px;">>Accept Invitation</button>
+            </form>
+
+            <p style="margin-top: 30px;">If you did not expect this request, you can safely ignore this email.</p>
+            <p>Regards,<br/>Warehouse Onboarding Team</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

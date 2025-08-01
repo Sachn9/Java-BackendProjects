@@ -29,8 +29,8 @@ public class AppUserService {
         this.mailService=mailService;
     }
 
-    public AppUser customerRegistration(AppUser customer){
-         return appUserRepository.save(customer);
+    public AppUser userRegistration(AppUser user){
+         return appUserRepository.save(user);
 
     }
 

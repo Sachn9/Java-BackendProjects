@@ -156,4 +156,13 @@ public class WareHouseService {
         return wareHouseRegistrationDTO;
 
     }
+
+    public WareHouse findWareHouseAtPinCode(int pinCode){
+        //We should chk warehouse table and check is there any wareHouse at this pinCode
+        UUID wareHouseId= wareHouseRepository.getWareHouseByLocation(pinCode);
+        if(wareHouseId==null){
+            return null;
+        }
+        return this.isValid(wareHouseId);
+    }
 }
