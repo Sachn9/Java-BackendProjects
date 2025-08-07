@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -209,6 +210,32 @@ public class MailService {
             mimeMessageHelper.setTo(wareHouseAdminEmail);
             mimeMessageHelper.setText(htmlContent,true);
             mimeMessageHelper.setSubject("Delivery Partner Registration");
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+        javaMailSender.send(mimeMessage);
+    }
+
+
+    public void sendToMailCustomer(AppUser customer, List<WareHouseItem> wareHouseItem,List<Product> products){
+        if (customer == null || products.isEmpty() || wareHouseItem.isEmpty()) return;
+
+        Context context=new Context();
+        context.setVariable("productName",products.get(0).getProductName());
+        context.setVariable("price",products.get(0).getUnitPrice());
+        context.setVariable("discount",wareHouseItem.get(0).getDiscount());
+        context.setVariable("quantity",wareHouseItem.get(0).getQuantity());
+        context.setVariable("isAvailable",wareHouseItem.get(0).getQuantity() > 0 ? "Yes" : "No");
+        String htmlTemplate=templateEngine.process("send-to customer-email",context);
+
+        MimeMessage mimeMessage=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage);
+
+        try{
+            mimeMessageHelper.setTo(customer.getEmail());
+            mimeMessageHelper.setText(htmlTemplate,true);
+            mimeMessageHelper.setSubject("Product Search for customer");
         }catch (Exception e){
             log.error(e.getMessage());
         }

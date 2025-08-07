@@ -3,6 +3,7 @@ package com.instamart.shopping_delivery.service;
 import com.instamart.shopping_delivery.exception.InvalidOperationException;
 import com.instamart.shopping_delivery.exception.UserNotExitException;
 import com.instamart.shopping_delivery.models.AppUser;
+import com.instamart.shopping_delivery.models.Location;
 import com.instamart.shopping_delivery.repositories.AppUserRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.Data;
@@ -21,15 +22,20 @@ public class AppUserService {
 
     AppUserRepository appUserRepository;
     MailService mailService;
+    LocationService locationService;
     @Autowired
     public AppUserService(AppUserRepository appUserRepository,
-                          MailService mailService){
+                          MailService mailService,
+                          LocationService locationService){
 
         this.appUserRepository=appUserRepository;
         this.mailService=mailService;
+        this.locationService=locationService;
     }
 
     public AppUser userRegistration(AppUser user){
+        Location location=user.getLocation().get(0);
+        locationService.createLocation(location);
          return appUserRepository.save(user);
 
     }
@@ -43,7 +49,7 @@ public class AppUserService {
 
         }
 
-        if(!admin.getUserType().equals("APP-ADMIN")){
+        if(!admin.getUserType().equals("APP_ADMIN")){
             throw new InvalidOperationException("user not allowed to invite wareHouse admin");
         }
 
@@ -63,7 +69,7 @@ public class AppUserService {
 
     public AppUser isAppAdmin(UUID userId){
         AppUser user=appUserRepository.findById(userId).orElse(null);
-        if(user.getUserType().equals("APP-ADMIN")){
+        if(user.getUserType().equals("APP_ADMIN")){
             return user;
         }
         return null;
@@ -73,10 +79,16 @@ public class AppUserService {
     public AppUser isWareHouseAdminId(UUID wareHouseAdminId){
 
         AppUser wareHouseAdmin=appUserRepository.findById(wareHouseAdminId).orElse(null);
-        if(wareHouseAdmin.getUserType().equals("WAREHOUSE-ADMIN")){
+        if(wareHouseAdmin.getUserType().equals("WAREHOUSE_ADMIN")){
             return wareHouseAdmin;
         }
         return null;
+    }
+
+    public AppUser isUser(UUID customerId){
+        AppUser user=appUserRepository.findById(customerId).orElse(null);
+        return user;
+
     }
 
 }

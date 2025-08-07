@@ -1,14 +1,19 @@
 package com.instamart.shopping_delivery.service;
 
 import com.instamart.shopping_delivery.dto.ProductDTO;
+import com.instamart.shopping_delivery.enums.UserType;
 import com.instamart.shopping_delivery.exception.InvalidOperationException;
 import com.instamart.shopping_delivery.models.AppUser;
+import com.instamart.shopping_delivery.models.Location;
 import com.instamart.shopping_delivery.models.Product;
+import com.instamart.shopping_delivery.models.WareHouse;
 import com.instamart.shopping_delivery.repositories.ProductRepository;
 import com.instamart.shopping_delivery.utility.MappingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,15 +24,19 @@ public class ProductService {
     ProductRepository productRepository;
     MappingUtility mappingUtility;
     MailService mailService;
+    LocationService locationService;
+
     @Autowired
     public ProductService(AppUserService appUserService,
                           ProductRepository productRepository,
                           MappingUtility mappingUtility,
-                          MailService mailService){
+                          MailService mailService,
+                          LocationService locationService){
         this.appUserService=appUserService;
         this.productRepository=productRepository;
         this.mappingUtility=mappingUtility;
         this.mailService=mailService;
+        this.locationService=locationService;
     }
 
     public Product save(Product product){
@@ -65,5 +74,18 @@ public class ProductService {
 
     public void updateProduct(Product product){
         productRepository.save(product);
+    }
+
+
+    public  Product getProductById(UUID pid){
+        return productRepository.findById(pid).orElse(null);
+
+    }
+
+    public List<Product> getProductByName(String name){
+        //Product repository
+        String namePattern="%"+name+"%";
+        List<Product> products=productRepository.getProductByName(namePattern);
+        return products;
     }
 }

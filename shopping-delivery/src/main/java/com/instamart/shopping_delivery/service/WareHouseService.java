@@ -1,6 +1,8 @@
 package com.instamart.shopping_delivery.service;
 
+import com.instamart.shopping_delivery.dto.WareHouseItemDTO;
 import com.instamart.shopping_delivery.dto.WareHouseRegistrationDTO;
+import com.instamart.shopping_delivery.enums.UserType;
 import com.instamart.shopping_delivery.exception.InvalidOperationException;
 import com.instamart.shopping_delivery.models.*;
 import com.instamart.shopping_delivery.repositories.WareHouseItemRepository;
@@ -10,9 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.MappedByteBuffer;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -164,5 +165,76 @@ public class WareHouseService {
             return null;
         }
         return this.isValid(wareHouseId);
+    }
+
+    public WareHouse getWareHouseByCustomerId(UUID customerId){
+        AppUser customer=appUserService.isUser(customerId);
+        if(!customer.getUserType().equals(UserType.CUSTOMER.toString())){
+            throw new InvalidOperationException(String.format("Customer with id %s is not allowed to see all product",customerId.toString()));
+        }
+
+        Location location=locationService.getPrimaryLocation(customer);
+        int pinCode=location.getPinCode();
+        WareHouse wareHouse=this.findWareHouseAtPinCode(pinCode);
+        return wareHouse;
+    }
+
+
+    public List<Product> getAllProductByPinCode(UUID customerId){
+        //chk customerID
+       WareHouse wareHouse=this.getWareHouseByCustomerId(customerId);
+        List<WareHouseItem> wareHouseItems=wareHouse.getWareHouseItems();
+
+        List<Product> products=new ArrayList<>();
+        for(WareHouseItem wareHouseItem:wareHouseItems){
+            UUID pid=wareHouseItem.getPid();
+            //call productService
+            Product product=productService.getProductById(pid);
+            products.add(product);
+
+        }
+        return products;
+    }
+
+    public List<WareHouseItemDTO> getProductsAtByName(String name, UUID customerId){
+        //product service
+        List<Product> products=productService.getProductByName(name);
+        //Check the Products that Product present in particular wareHouse YES/NO;
+
+        WareHouse wareHouse=getWareHouseByCustomerId(customerId);
+        List<WareHouseItem> wareHouseItem=wareHouse.getWareHouseItems();
+        List<WareHouseItemDTO> wareHouseItemDTOS=new ArrayList<>();
+        for(int i=0;i<products.size();i++){
+            UUID productId=products.get(i).getId();
+            String productName=products.get(i).getProductName();
+            WareHouseItemDTO wareHouseItemDTO=new WareHouseItemDTO();
+            wareHouseItemDTO.setProductId(productId);
+            wareHouseItemDTO.setWid(wareHouse.getId());
+            wareHouseItemDTO.setProductName(productName);
+            wareHouseItemDTO.setPrice(products.get(i).getUnitPrice());
+            wareHouseItemDTO.setDiscount(0.0);
+            wareHouseItemDTO.setAvailable(false);
+            wareHouseItemDTO.setQuantity(products.get(i).getTotalQuantity());
+
+            for(int j=0;j<wareHouseItem.size();j++){
+                UUID wareHouseItemId=wareHouseItem.get(j).getPid();
+
+                if(productId.toString().equals(wareHouseItemId.toString())){
+                    wareHouseItemDTO.setAvailable(true);
+                    wareHouseItemDTO.setDiscount(wareHouseItem.get(j).getDiscount());
+                    wareHouseItemDTO.setQuantity(wareHouseItem.get(j).getQuantity());
+
+                }
+            }
+            wareHouseItemDTOS.add(wareHouseItemDTO);
+        }
+
+        AppUser customer =appUserService.isUser(customerId);
+        if(!customer.getUserType().equals(UserType.CUSTOMER.toString())){
+            throw new InvalidOperationException(String.format("Customer with id %s is not allowed to see all product",customerId.toString()));
+        }
+        mailService.sendToMailCustomer(customer,wareHouseItem,products);
+        return wareHouseItemDTOS;
+
     }
 }

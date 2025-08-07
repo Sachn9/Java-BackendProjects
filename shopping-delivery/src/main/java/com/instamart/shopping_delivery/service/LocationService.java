@@ -1,6 +1,7 @@
 package com.instamart.shopping_delivery.service;
 
 import com.instamart.shopping_delivery.dto.WareHouseRegistrationDTO;
+import com.instamart.shopping_delivery.models.AppUser;
 import com.instamart.shopping_delivery.models.Location;
 import com.instamart.shopping_delivery.repositories.LocationRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,10 @@ public class LocationService {
         location.setUpdatedAt(LocalDateTime.now());
         return locationRepository.save(location);
 
+    }
+
+    public Location getPrimaryLocation(AppUser user){
+        return user.getLocation().get(0);
     }
 
 
