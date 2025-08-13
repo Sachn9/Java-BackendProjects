@@ -6,11 +6,14 @@ import java.util.UUID;
 
 @Data
 public class OrderProductDTO {
-    UUID productId;
+    UUID orderId;
     String productName;
+    int productId;
     int quantity;
+    String status;
     String ownerCompany;
     String description;
+    String paymentType;
 }
 
 

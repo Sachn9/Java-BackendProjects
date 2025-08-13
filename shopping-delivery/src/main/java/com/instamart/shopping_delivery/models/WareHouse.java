@@ -22,6 +22,9 @@ public class WareHouse {
 
     @OneToMany
     List<WareHouseItem> wareHouseItems;
+
+    @OneToMany
+    List<AppUser> deliveryPartner;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

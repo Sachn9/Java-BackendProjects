@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -15,6 +16,8 @@ public class WareHouseItem{
     UUID id;
     UUID wid;
     UUID pid;
+    @OneToMany
+    List<Product> productList;
     int quantity;
     int discount;
     LocalDateTime createdAt;

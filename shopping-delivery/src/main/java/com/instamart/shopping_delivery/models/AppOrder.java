@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,6 +19,9 @@ public class AppOrder {
     String status;
     @ManyToOne
     AppUser deliveryPartner;
+
+    @OneToMany
+    List<Product> products;
 
     @ManyToOne
     AppUser shopper;

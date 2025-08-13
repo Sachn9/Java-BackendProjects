@@ -78,7 +78,10 @@ public class UserController {
 
         }
 
+    }
 
-
+    @GetMapping("/deliverpartner/registration/accept/{deliverypartnerId}")
+    public void acceptDeliveryPartner(@PathVariable UUID deliveryPartnerId){
+        deliveryPartnerService.acceptDeliveryPartner(deliveryPartnerId);
     }
 }
