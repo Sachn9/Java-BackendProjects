@@ -2,11 +2,11 @@ package com.instamart.shopping_delivery.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.autoconfigure.web.WebProperties;
-
-import java.rmi.server.UID;
+//import lombok.Getter;
+//import lombok.Setter;
+//import org.springframework.boot.autoconfigure.web.WebProperties;
+//
+//import java.rmi.server.UID;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

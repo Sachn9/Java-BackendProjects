@@ -33,7 +33,7 @@ public class AppUserService {
         this.locationService=locationService;
     }
 
-    public AppUser userRegistration(AppUser user){
+    public AppUser userRegistration(@org.jetbrains.annotations.NotNull AppUser user){
         Location location=user.getLocation().get(0);
         locationService.createLocation(location);
          return appUserRepository.save(user);

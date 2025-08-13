@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,15 +16,14 @@ public class AppOrder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;
     int totalItems;
-    int totalPrice;
-    String status;
-    @ManyToOne
+    BigDecimal totalPrice;
+    @ManyToOne(fetch = FetchType.LAZY)
     AppUser deliveryPartner;
 
-    @OneToMany
-    List<Product> products;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<OderItems> items;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     AppUser shopper;
     String paymentType;
     LocalDateTime createdAt;

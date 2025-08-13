@@ -41,7 +41,7 @@ public class MappingUtility {
 
     public AppOrder mapOrderProductDtoToAppOrderModel(OrderProductDTO orderProductDTO){
         AppOrder appOrder=new AppOrder();
-        appOrder.setStatus(orderProductDTO.getStatus());
+//        appOrder.setStatus(orderProductDTO.getStatus());
         appOrder.setPaymentType(orderProductDTO.getPaymentType());
         appOrder.setCreatedAt(LocalDateTime.now());
         appOrder.setUpdatedAt(LocalDateTime.now());
